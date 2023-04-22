@@ -1,0 +1,25 @@
+node('built-in')
+{
+    stage('continuous download')
+    {
+      git 'https://github.com/selenium-saikrishna/maven.git'
+    }
+    stage('continuous build')
+    {
+        sh 'mvn package'
+    }
+    stage('continuous deployment')
+    {    
+        deploy adapters: [tomcat9(credentialsId: '06afcc01-4b56-49a6-aaec-9adaf5801879', path: '', url: 'http://172.31.47.113:8080')], contextPath: 'testapp', war: '**/*.war'
+    }
+    stage('continuous testing')
+    {
+       sh 'echo "testing passed"'
+    }
+    stage('continuous delivery')
+    {
+        input message: 'Need approval from DM', submitter: 'srinivas'
+        deploy adapters: [tomcat9(credentialsId: '06afcc01-4b56-49a6-aaec-9adaf5801879', path: '', url: 'http://172.31.36.116:8080')], contextPath: 'prodapp', war: '**/*.war'
+    }
+}
+        
