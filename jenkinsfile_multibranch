@@ -17,27 +17,5 @@ pipeline
                 sh 'mvn package'
             }
         }
-        stage('continuous deployment')
-        {
-            steps
-            {
-                sh 'scp /var/lib/jenkins/workspace/declarative_pipeline/webapp/target/webapp.war ubuntu@172.31.47.113:/var/lib/tomcat9/webapps/testapp.war'
-    
-	        }
-        }
-        stage('continuous testing')
-        {
-            steps
-            {
-               sh 'echo "testing passed"'
-            }
-        }
-        stage('continuous delivery')
-        {
-            steps
-            {
-                sh 'scp /var/lib/jenkins/workspace/declarative_pipeline/webapp/target/webapp.war ubuntu@172.31.36.116:/var/lib/tomcat9/webapps/prodapp.war'
-            }
-        }
     }
 }
